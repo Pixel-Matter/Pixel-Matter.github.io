@@ -142,14 +142,14 @@ const texts = {
 // Компонент ячейки элемента
 const ElementCell = ({ element, onClick, isSelected, highlightCategory }) => {
   if (!element) return <div className="w-10 h-12 md:w-12 md:h-14" />;
-  
+
   const isHighlighted = !highlightCategory || element.category === highlightCategory;
   const bgColor = categoryColors[element.category]?.bg || '#ccc';
-  
+
   // Тёмный текст для светлых фонов (жёлтый, зелёный, оранжевый)
   const needsDarkText = ['transition', 'alkaline', 'metal', 'metalloid'].includes(element.category);
   const textColor = needsDarkText ? 'text-gray-900' : 'text-white';
-  
+
   return (
     <div
       onClick={() => onClick(element)}
@@ -173,7 +173,7 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
   const shellColors = ['#a8d5ff', '#8ec5fc', '#74b3f7', '#5a9ff2', '#3b82f6'];
   const maxElectrons = [2, 8, 18, 32, 32]; // максимум электронов на каждой оболочке (упрощённо для визуализации используем 8 для внешних)
   const displayMax = [2, 8, 8, 8, 8]; // для отображения пустых мест (упрощённая модель для школы)
-  
+
   // Анимация электронов (только когда isPlaying = true)
   useEffect(() => {
     if (!isPlaying) return;
@@ -182,28 +182,28 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
     }, 50);
     return () => clearInterval(interval);
   }, [isPlaying]);
-  
+
   // Генерация позиций частиц в ядре (перемешанные, статичные)
   const nucleusParticles = useMemo(() => {
     const particles = [];
     const totalNucleons = element.protons + element.neutrons;
-    
+
     // Размер частиц уменьшается с ростом атомного числа
     const particleRadius = totalNucleons <= 4 ? 6 : totalNucleons <= 10 ? 5 : totalNucleons <= 20 ? 4 : 3;
     const nucleusRadius = totalNucleons <= 2 ? 8 : totalNucleons <= 4 ? 12 : Math.min(22, 8 + totalNucleons * 0.25);
-    
+
     const allTypes = [
       ...Array(element.protons).fill('proton'),
       ...Array(element.neutrons).fill('neutron')
     ];
-    
+
     // Перемешиваем детерминированно
     const seed = element.number * 137;
     for (let i = allTypes.length - 1; i > 0; i--) {
       const j = Math.abs(Math.floor(Math.sin(seed + i * 7) * 10000)) % (i + 1);
       [allTypes[i], allTypes[j]] = [allTypes[j], allTypes[i]];
     }
-    
+
     // Специальная раскладка для очень маленьких ядер
     if (totalNucleons === 1) {
       // Водород - один протон в центре
@@ -236,7 +236,7 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
         });
       }
     }
-    
+
     return { particles, radius: nucleusRadius, particleRadius };
   }, [element.number, element.protons, element.neutrons]);
 
@@ -280,7 +280,7 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
             <stop offset="100%" stopColor="#3d4350" stopOpacity="0.8" />
           </radialGradient>
         </defs>
-        
+
         {/* Электронные облака (от внешнего к внутреннему) */}
         {[...element.electrons].reverse().map((count, reversedIndex) => {
           const shellIndex = element.electrons.length - 1 - reversedIndex;
@@ -315,7 +315,7 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
             </g>
           );
         })}
-        
+
         {/* Анимированные электроны и пустые места */}
         {orbitalData.map((e, i) => {
           const angle = e.baseAngle + rotation * e.speed;
@@ -345,12 +345,12 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
             />
           );
         })}
-        
+
         {/* Ядро */}
-        <circle 
-          cx="0" 
-          cy="0" 
-          r={nucleusParticles.radius + 5} 
+        <circle
+          cx="0"
+          cy="0"
+          r={nucleusParticles.radius + 5}
           fill={`url(#nucleusGradient-${element.number})`}
         />
         {nucleusParticles.particles.map((p, i) => (
@@ -365,7 +365,7 @@ const AtomVisualization = ({ element, lang, isPlaying }) => {
           />
         ))}
       </svg>
-      
+
       {/* Легенда */}
       <div className="flex flex-wrap gap-3 text-xs mt-2 bg-gray-800 bg-opacity-90 px-3 py-2 rounded justify-center">
         <div className="flex items-center gap-1">
@@ -396,15 +396,15 @@ const ElementInfo = ({ element, lang }) => {
   const stateEmoji = { solid: '🧊', liquid: '💧', gas: '💨' };
   const categoryName = lang === 'ru' ? categoryColors[element.category]?.nameRu : categoryColors[element.category]?.nameSrb;
   const stateName = t[element.state];
-  
+
   // Тёмный текст для светлых фонов
   const needsDarkText = ['transition', 'alkaline', 'metal', 'metalloid'].includes(element.category);
   const cardTextColor = needsDarkText ? 'text-gray-900' : 'text-white';
-  
+
   return (
     <div className="bg-gray-800 rounded-lg p-3 text-white">
       <div className="flex items-center gap-3 mb-3">
-        <div 
+        <div
           className={`w-16 h-16 rounded-lg flex flex-col items-center justify-center font-bold ${cardTextColor}`}
           style={{ backgroundColor: categoryColors[element.category]?.bg }}
         >
@@ -420,7 +420,7 @@ const ElementInfo = ({ element, lang }) => {
           </p>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-3 gap-2 text-xs">
         <div className="bg-gray-700 p-2 rounded">
           <span className="text-gray-400 block">{t.atomicNumber}</span>
@@ -474,15 +474,15 @@ const QuizMode = ({ elements, lang }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [showResult, setShowResult] = useState(false);
-  
+
   const generateQuestion = () => {
     const types = ['symbol', 'number', 'electrons', 'category'];
     const type = types[Math.floor(Math.random() * types.length)];
     const element = elements[Math.floor(Math.random() * elements.length)];
     const elementName = lang === 'ru' ? element.nameRu : element.nameSrb;
-    
+
     let questionText, correctAnswer, options;
-    
+
     switch(type) {
       case 'symbol':
         questionText = `${t.quizSymbol} ${elementName}?`;
@@ -509,14 +509,14 @@ const QuizMode = ({ elements, lang }) => {
       default:
         break;
     }
-    
+
     setQuestion({ text: questionText, correct: correctAnswer, options: options.sort(() => Math.random() - 0.5) });
     setSelectedAnswer(null);
     setShowResult(false);
   };
-  
+
   useEffect(() => { generateQuestion(); }, [lang]);
-  
+
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
     setShowResult(true);
@@ -525,9 +525,9 @@ const QuizMode = ({ elements, lang }) => {
       total: s.total + 1
     }));
   };
-  
+
   if (!question) return null;
-  
+
   return (
     <div className="bg-gray-800 rounded-lg p-6 text-white max-w-lg mx-auto">
       <div className="flex justify-between items-center mb-4">
@@ -536,9 +536,9 @@ const QuizMode = ({ elements, lang }) => {
           {t.score}: {score.correct}/{score.total}
         </span>
       </div>
-      
+
       <p className="text-lg mb-6">{question.text}</p>
-      
+
       <div className="grid grid-cols-2 gap-3">
         {question.options.map((option, i) => (
           <button
@@ -559,7 +559,7 @@ const QuizMode = ({ elements, lang }) => {
           </button>
         ))}
       </div>
-      
+
       {showResult && (
         <div className="mt-4 text-center">
           <p className={`text-lg mb-3 ${selectedAnswer === question.correct ? 'text-green-400' : 'text-red-400'}`}>
@@ -578,18 +578,18 @@ const QuizMode = ({ elements, lang }) => {
 };
 
 // Основной компонент
-export default function PeriodicTableApp() {
+function PeriodicTableApp() {
   const [selectedElement, setSelectedElement] = useState(null);
   const [viewMode, setViewMode] = useState('table');
   const [highlightCategory, setHighlightCategory] = useState(null);
   const [lang, setLang] = useState('srb');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
-  
+
   const t = texts[lang];
-  
+
   const shellLabels = ['K', 'KL', 'KLM', 'KLMN', 'KLMNO'];
-  
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -599,7 +599,7 @@ export default function PeriodicTableApp() {
       setIsFullscreen(false);
     }
   };
-  
+
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -607,7 +607,7 @@ export default function PeriodicTableApp() {
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
-  
+
   // Создание сетки таблицы
   const grid = Array(5).fill(null).map(() => Array(18).fill(null));
   elementsData.forEach(el => {
@@ -645,7 +645,7 @@ export default function PeriodicTableApp() {
         </div>
         <p className="text-gray-400 text-sm">{t.subtitle}</p>
       </header>
-      
+
       <div className="flex flex-wrap justify-center gap-2 mb-2">
         <button
           onClick={() => setViewMode('table')}
@@ -660,7 +660,7 @@ export default function PeriodicTableApp() {
           🎯 {t.quiz}
         </button>
       </div>
-      
+
       {viewMode === 'table' && (
         <>
           <div className="flex flex-wrap justify-center gap-1.5 mb-3">
@@ -681,7 +681,7 @@ export default function PeriodicTableApp() {
               </button>
             ))}
           </div>
-          
+
           <div className="mb-4">
             <div className="flex flex-col gap-0.5 mx-auto" style={{ width: 'fit-content' }}>
               {grid.map((row, rowIndex) => (
@@ -701,7 +701,7 @@ export default function PeriodicTableApp() {
               ))}
             </div>
           </div>
-          
+
           {selectedElement && (
             <div className="flex flex-row gap-4 items-start justify-center mt-2">
               <div className="flex flex-col items-center flex-shrink-0">
@@ -722,18 +722,20 @@ export default function PeriodicTableApp() {
               </div>
             </div>
           )}
-          
+
           {!selectedElement && (
             <p className="text-center text-gray-500 text-sm mt-4">{t.clickHint}</p>
           )}
         </>
       )}
-      
+
       {viewMode === 'quiz' && <QuizMode elements={elementsData} lang={lang} />}
-      
+
       <footer className="text-center text-gray-600 text-xs mt-4">
         <p>{elementsData.length} {t.elements}</p>
       </footer>
     </div>
   );
 }
+
+export default PeriodicTableApp;

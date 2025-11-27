@@ -1,17 +1,25 @@
 <!-- <iframe src="https://claude.site/public/artifacts/e8a6d594-be5d-4939-a0fa-c2c37f14b77b/embed" title="Claude Artifact" width="100%" height="100%" frameborder="0" allow="clipboard-write" allowfullscreen></iframe> -->
-<body>
-  <div id="root"></div>
-  <script type="module" src="periodic-table.jsx"></script>
+<!DOCTYPE html>
+<html style="width:100%;height:100%;margin:0;padding:0;">
+<head>
+  <meta charset="UTF-8" />
+  <!-- React from CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-  <style>
-    html, body, #root {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #root {
-      display: flex;
-      width: 100%;
-    }
-  </style>
+  <!-- Babel to convert Claude's JSX in browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
+  <div id="root" style="width:100%;height:100%;display:flex;"></div>
+
+  <!-- Load your artifact React module (transpiled in browser) -->
+  <script type="text/babel" data-type="module" data-presets="react">
+    import PeriodicTableApp from "./periodic-table.jsx";
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<PeriodicTableApp />);
+  </script>
 </body>
+</html>
