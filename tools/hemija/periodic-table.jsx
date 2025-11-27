@@ -159,9 +159,9 @@ const ElementCell = ({ element, onClick, isSelected, highlightCategory }) => {
       } ${!isHighlighted ? 'opacity-30' : ''}`}
       style={{ backgroundColor: bgColor }}
     >
-      <span className="text-xs opacity-80 leading-tight py-0.5">{element.number}</span>
-      <span className="text-base md:text-lg leading-none my-1">{element.symbol}</span>
-      <span className="text-xs opacity-80 leading-tight py-0.5">{element.mass.toFixed(1)}</span>
+      <span className="text-[10px] opacity-80 leading-tight">{element.number}</span>
+      <span className="text-base md:text-lg leading-none my-0.5">{element.symbol}</span>
+      <span className="text-[10px] opacity-80 leading-tight">{element.mass.toFixed(1)}</span>
     </div>
   );
 };
@@ -618,7 +618,7 @@ function PeriodicTableApp() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-2 md:p-3">
+    <div className="min-h-screen w-full bg-gray-900 text-white p-2 md:p-3">
       <header className="text-center mb-2">
         <div className="flex justify-center items-center gap-3 mb-1 flex-wrap">
           <h1 className="text-xl md:text-2xl font-bold">🔬 {t.title}</h1>
