@@ -9,13 +9,16 @@
 
   <!-- Babel to convert Claude's JSX in browser -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind CSS (required for styling) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
   <div id="root" style="width:100%;height:100%;display:flex;"></div>
 
   <!-- Load your artifact React module (transpiled in browser) -->
-  <script type="text/babel" src="./periodic-table.jsx" data-presets="react"></script>
+  <script type="text/babel" src="./periodic-table.jsx?v=2" data-presets="react"></script>
 
   <!-- Render the component after it's loaded -->
   <script type="text/babel" data-presets="react">
