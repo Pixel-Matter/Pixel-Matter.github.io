@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
+// Use React from global scope (loaded via CDN)
+const { useState, useMemo, useEffect } = React;
 
 // Данные элементов (первые 54 - до 5 периода включительно)
 const elementsData = [
@@ -738,5 +739,5 @@ function PeriodicTableApp() {
   );
 }
 
-export default PeriodicTableApp;
+// Expose component globally for use in HTML
 window.PeriodicTableApp = PeriodicTableApp;
