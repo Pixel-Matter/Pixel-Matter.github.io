@@ -84,9 +84,9 @@ const texts = {
     clickHint: '👆 Нажмите на элемент, чтобы увидеть детали и модель атома',
     atomicNumber: 'Атомный номер',
     atomicMass: 'Атомная масса',
-    protons: 'Протоны (p⁺)',
-    neutrons: 'Нейтроны (n⁰)',
-    electrons: 'Электроны (e⁻)',
+    protons: 'Протоны (p⁺)',
+    neutrons: 'Нейтроны (n⁰)',
+    electrons: 'Электроны (e⁻)',
     state: 'Агрегатное состояние',
     electronConfig: 'Электронная конфигурация',
     electronegativity: 'Электроотрицательность (по Полингу)',
@@ -116,9 +116,9 @@ const texts = {
     clickHint: '👆 Кликни на елемент да видиш детаље и модел атома',
     atomicNumber: 'Атомски број',
     atomicMass: 'Атомска маса',
-    protons: 'Протони (p⁺)',
-    neutrons: 'Неутрони (n⁰)',
-    electrons: 'Електрони (e⁻)',
+    protons: 'Протони (p⁺)',
+    neutrons: 'Неутрони (n⁰)',
+    electrons: 'Електрони (e⁻)',
     state: 'Агрегатно стање',
     electronConfig: 'Електронска конфигурација',
     electronegativity: 'Електронегативност (по Полингу)',
@@ -160,7 +160,7 @@ const ElementCell = ({ element, onClick, isSelected, highlightCategory }) => {
       style={{ backgroundColor: bgColor }}
     >
       <span className="text-[10px] opacity-80 leading-tight">{element.number}</span>
-      <span className="text-base md:text-lg leading-none my-0.5">{element.symbol}</span>
+      <span className="text-base md:text-lg leading-none">{element.symbol}</span>
       <span className="text-[10px] opacity-80 leading-tight">{element.mass.toFixed(1)}</span>
     </div>
   );
@@ -410,7 +410,7 @@ const ElementInfo = ({ element, lang }) => {
           style={{ backgroundColor: categoryColors[element.category]?.bg }}
         >
           <span className="text-xs opacity-80">{element.number}</span>
-          <span className="text-2xl leading-none my-0.5">{element.symbol}</span>
+          <span className="text-2xl leading-none">{element.symbol}</span>
           <span className="text-xs opacity-80">{element.mass.toFixed(1)}</span>
         </div>
         <div>
