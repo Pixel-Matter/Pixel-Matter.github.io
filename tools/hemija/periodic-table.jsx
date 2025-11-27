@@ -159,9 +159,9 @@ const ElementCell = ({ element, onClick, isSelected, highlightCategory }) => {
       } ${!isHighlighted ? 'opacity-30' : ''}`}
       style={{ backgroundColor: bgColor }}
     >
-      <span className="text-xs opacity-80 leading-none">{element.number}</span>
-      <span className="text-base md:text-lg leading-none my-0.5">{element.symbol}</span>
-      <span className="text-xs opacity-80 leading-none">{element.mass.toFixed(1)}</span>
+      <span className="text-xs opacity-80 leading-tight py-0.5">{element.number}</span>
+      <span className="text-base md:text-lg leading-none my-1">{element.symbol}</span>
+      <span className="text-xs opacity-80 leading-tight py-0.5">{element.mass.toFixed(1)}</span>
     </div>
   );
 };
