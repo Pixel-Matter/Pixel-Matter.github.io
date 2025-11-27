@@ -739,3 +739,4 @@ function PeriodicTableApp() {
 }
 
 export default PeriodicTableApp;
+window.PeriodicTableApp = PeriodicTableApp;

@@ -15,11 +15,9 @@
   <div id="root" style="width:100%;height:100%;display:flex;"></div>
 
   <!-- Load your artifact React module (transpiled in browser) -->
-  <script type="text/babel" data-type="module" data-presets="react">
-    import PeriodicTableApp from "./periodic-table.jsx";
-
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<PeriodicTableApp />);
+  <script type="text/babel" src="./periodic-table.jsx" data-presets="react">
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<PeriodicTableApp />);
   </script>
 </body>
 </html>
