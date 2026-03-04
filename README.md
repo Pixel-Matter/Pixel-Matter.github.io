@@ -15,6 +15,8 @@
 
 ## [Pixel Matter µZX](https://github.com/Pixel-Matter/uZX)
 
+![µZX Player](https://github.com/Pixel-Matter/uZX/raw/main/docs/uzx-player.gif)
+
 A modern DAW-style PC-based music composition suite for creating chiptune music on platforms using the AY-3-8910/YM2149 sound chips (ZX Spectrum, Amstrad CPC, MSX, Atari ST, and others). Features real-time chip emulation, MIDI-to-PSG conversion, and support for different musical tuning systems.
 
 - **µZX Studio** — full-featured PSG music editor with timeline, instruments, and effects. Includes µZX Tuning.
