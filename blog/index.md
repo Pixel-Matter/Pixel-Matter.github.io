@@ -4,4 +4,4 @@ title: Блог
 
 # Блог
 
-- [На тему нарративных ИИ-игр](narrative-AI-games.html)
+- 4 августа 2026 — [На тему нарративных ИИ-игр](narrative-AI-games.html)
