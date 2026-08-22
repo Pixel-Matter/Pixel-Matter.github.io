@@ -15,6 +15,10 @@ Current version is v0.5.
 - Wavetables playback, pitched, trageting any AY register.
 - Modulations to timer fx.
 
+## Used in prods
+
+Undisclosed.
+
 ## Future versions
 
 Undisclosed.
