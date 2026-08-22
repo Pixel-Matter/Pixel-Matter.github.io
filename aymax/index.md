@@ -29,6 +29,6 @@ ru grantez, spke.
 
 ## Greets to
 
-diver, pator, megus, sq, bfox, n1k-o, fatalsnipe, grongy, dalthon, jammerC64, wbcbz7, kowalski, tmk, true-grue and all ZX Spectrum musicians and demosceners.
+diver, pator, megus, sq, bfox, n1k-o, fatalsnipe, grongy, dalthon, jammerC64, wbcbz7, kowalski, volutar, tmk, true-grue and all ZX Spectrum musicians and demosceners.
 
 ## Year 2026
