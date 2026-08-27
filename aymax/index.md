@@ -1,23 +1,32 @@
-# AYMAX
+```
+     ______    ____       ____________      ________     ______      ____      ____
+    /      \   \   \     /   /|       \    /       |    /      \     \   \    /   /
+   /   /\   \    \   \ /   /  |   |\   \  /   /|   |   /   /\   \      \   \/   /
+  /   /__\   \     \  '  /    |   | \   \/   / |   |  /   /__\   \      /      \
+ /    ____    \     |   |     |   |  \      /  |   | /    ____    \   /   /  \   \
+/____/    \____\    |___|     |___|   \____/   |___|/____/    \____\/____/    \____\
+```
 
-AYMAX is a ZX Spectrum 128 engine for playing AY/YM chiptune with timer trick fx.
+**AYMAX** is a ZX Spectrum 128 engine for playing AY/YM chiptune with timer trick fx.
 
 Current version is v0.5.
 
 ## Features
 
-- Sampling rate is 15556 Hz.
-- Single channel with timer fx writing to single AY rigister at a time: any of A, B and C, at any frame.
-- SID sound with controlled frequency, volume.
-- SID sound with controlled duty cycle, volume (any V1 nd V2 as values).
-- Syncbuzz sound with controlled duty cycle.
-- Samples playback, trageting any AY register.
+- Sampling rate is 15.5kHz.
+- Single timer fx lane writing to a single AY rigister at a time:
+  can work on any AY channels (A, B or C), envelope channel, noise pitch, etc, at any frame.
+- SID sound with controlled frequency or PWM sweep, volume (any V1/V2 values).
+- FM with arbitrary number of frequency modulation steps.
+- Syncbuzzer sound with controlled PWM sweep or FM.
+- Samples playback, targeting any AY register.
 - Wavetables playback, pitched, trageting any AY register.
-- Modulations to timer fx.
+- Modulations to any timer fx.
+- Importing music with timer fx in TAYM interchange format, see https://github.com/ruguevara/taym.
 
 ## Used in prods
 
-Undisclosed.
+Atarized, by Otomata labs, for Xenium 2026
 
 ## Future versions
 
@@ -25,7 +34,7 @@ Undisclosed.
 
 ## Credits
 
-ru grantez, spke.
+Ru Grantez, spke.
 
 ## Greets to
 
