@@ -26,7 +26,7 @@ Current version is v0.5.
 
 ## Used in prods
 
-Atarized, by Otomata labs, for Xenium 2026
+Atarized, by Otomata Labs, for Xenium 2026
 
 ## Future versions
 
