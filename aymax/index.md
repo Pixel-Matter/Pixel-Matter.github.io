@@ -26,7 +26,7 @@ Current version is v0.5.
 
 ## Used in prods
 
-Atarized by Otomata Labs, for Xenium 2026
+[Atarized by Otomata Labs](https://demozoo.org/music/396811/), 2st place in Chip MSX competition at Xenium 2026.
 
 ## Future versions
 
@@ -34,7 +34,7 @@ Undisclosed.
 
 ## Credits
 
-Ru Grantez, spke.
+ru grantez, spke.
 
 ## Greets to
 
