@@ -22,7 +22,7 @@ Current version is v0.5.
 - Samples playback, targeting any AY register.
 - Wavetables playback, pitched, trageting any AY register.
 - Modulations to any timer fx.
-- Importing music with timer fx in TAYM interchange format, see https://github.com/ruguevara/taym.
+- Importing music with timer fx in [TAYM interchange format](https://github.com/ruguevara/taym).
 
 ## Used in prods
 
