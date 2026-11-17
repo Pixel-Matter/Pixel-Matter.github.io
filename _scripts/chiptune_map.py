@@ -282,7 +282,7 @@ def draw():
     players_y = formats_y + FORMAT_H + TAG_H + 60
     player_wires, player_boxes, bottom = draw_rows(PLAYBACK, players_y, played)
 
-    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 7, facts checked 2026-11-17", 14, MUTED),
+    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 8, facts checked 2026-11-17", 14, MUTED),
            text(PX, TARGET_Y + TARGET_H / 2, "Target platforms", 19, weight=600),
            text(PX, TARGET_Y + TARGET_H / 2 + 19, "sound chips and their machines", 13, MUTED),
            draw_targets(GRID_X - PITCH / 2, TARGET_Y)]
@@ -333,7 +333,6 @@ def draw():
     for pid, (label, _) in GLYPHS.items():
         out += [glyph(pid, gx, ly - GLYPH / 2, GLYPH), text(gx + glyph_width(pid, GLYPH) + 6, ly + 5, label, 13, MUTED)]
         gx += glyph_width(pid, GLYPH) + 6 + len(label) * 7.2 + 26
-    out.append(text(gx, ly + 5, "and a small picture of a retro machine", 13, MUTED))
     colours = sorted({c for _, c, _, _ in COLUMNS.values()})
     markers = "".join(f"<marker id='m{c[1:]}' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='5' markerHeight='5' "
                       f"orient='auto'><path d='M1 1L9 5L1 9z' fill='{c}'/></marker>" for c in colours)

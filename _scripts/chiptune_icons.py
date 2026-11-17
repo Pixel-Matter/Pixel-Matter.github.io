@@ -291,10 +291,21 @@ def dump():
 
 # ======================================================================================
 # Platform glyphs: small marks on a tool or a player for what it runs on.
-# They are drawn here, not copied from the vendors' artwork.
+# They are drawn here after the platforms' well-known marks, not copied from the vendors' artwork.
 
 G = "#444441"
 GLYPHS = {  # id: (name, drawing in a 16 by 16 box)
+    "zx": ("ZX Spectrum", "".join(  # the four-colour diagonal stripe
+        f"<polygon points='{x + 3.6},1 {x + 6.4},1 {x + 2.8},15 {x},15' fill='{c}'/>"
+        for x, c in zip((0.6, 3.4, 6.2, 9.0), (RED, YELLOW, GREEN, CYAN)))),
+    "c64": ("Commodore 64",  # the C with its two flags
+            "<path d='M10.34 4.02A5.2 5.2 0 1 0 10.34 11.98' fill='none' stroke='#1F3F94' stroke-width='3.2'/>"
+            "<polygon points='9.7,5.2 15.8,5.2 13.8,7.6 9.7,7.6' fill='#1F3F94'/>"
+            f"<polygon points='9.7,8.4 13.8,8.4 15.8,10.8 9.7,10.8' fill='{RED}'/>"),
+    "st": ("Atari ST",  # the three-pronged mark
+           f"<path fill='{G}' d='M7 1.5h2v13h-2zM3.8 1.5H5.6V7.5C5.6 11.5 3.6 13.6 1 14.5V12.4C2.8 11.6 3.8 10 3.8 7.5Z"
+           "M12.2 1.5H10.4V7.5C10.4 11.5 12.4 13.6 15 14.5V12.4C13.2 11.6 12.2 10 12.2 7.5Z'/>"),
+    "msx": ("MSX", f"<text x='0' y='12.2' font-size='10.5' font-weight='800' font-style='italic' fill='{G}'>MSX</text>"),
     "win": ("Windows", "".join(f"<rect x='{x}' y='{y}' width='7.2' height='7.2' fill='{G}'/>"
                                for x in (0.5, 8.3) for y in (0.5, 8.3))),
     "mac": ("macOS", f"<path fill='{G}' d='M8 4.6C6.9 3.9 5.4 3.7 4.2 4.6C2.6 5.8 2.4 8.4 3.2 10.6C3.9 12.6 5.2 14.6 6.5 14.6"
@@ -318,17 +329,15 @@ GLYPHS = {  # id: (name, drawing in a 16 by 16 box)
                                      "<path d='M5.2 11h2.6M6.5 9.7v2.6' stroke='#FFFFFF' stroke-width='1'/>"
                                      "<circle cx='10.3' cy='11' r='0.9' fill='#FFFFFF'/>"),
 }
-MACHINE_GLYPHS = {"zx": "ZX Spectrum", "c64": "Commodore 64", "st": "Atari ST", "msx": "MSX"}  # the icon, shrunk
+WIDE = {"ios": 1.3, "msx": 1.75}  # glyphs wider than their height
 
 
 def glyph_width(platform, size):
-    return size * (1.9 if platform in MACHINE_GLYPHS else 1.3 if platform == "ios" else 1)
+    return size * WIDE.get(platform, 1)
 
 
 def glyph(platform, x, y, size):
     """The mark for a platform id, its top left corner at (x, y)."""
-    if platform in MACHINE_GLYPHS:
-        return icon(MACHINE_GLYPHS[platform]).svg(x + size * 0.95, y + size / 2, size * 1.9, size)
     return f"<g transform='translate({x:.1f} {y:.1f}) scale({size / 16})'>{GLYPHS[platform][1]}</g>"
 
 
