@@ -16,83 +16,146 @@ OUT = Path(__file__).resolve().parent.parent / "chiptune" / "map.svg"
 
 # ======================================================================================
 # The map
+#
+# Every fact below carries, in the comment above it, the page that proves it (checked 2026-11-17).
+# A dot on the map is a claim: don't add one without its link. "2nd-hand" marks a fact for which
+# only a wiki or a third party's page was found, not the tool's own.
 
+# AY family and its machines: https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 (2nd-hand)
+# SID in the C64, 2A03 in the NES: https://github.com/tildearrow/furnace (README chip list)
 CHIPS = {  # id: (name, colour, machines that carry it)
     "ay": ("AY-3-8910 / YM2149", "#1D9E75", ["ZX Spectrum 128", "Atari ST", "Amstrad CPC", "MSX"]),
     "sid": ("SID", "#7F77DD", ["Commodore 64"]),
     "nes": ("2A03", "#D85A30", ["NES / Famicom"]),
 }
 
+# Archives were checked by listing them:
+#   ZXArt   https://zxart.ee (API filter zxMusicFormat= returns pt3, stc, asc, ay, psg, ym)
+#   Modland https://ftp.modland.com/pub/modules/ (folders: Spectrum/Pro Tracker 3, Spectrum/ST Song Compiler,
+#           Spectrum/ASC Sound Master, ArkosTracker, GoatTracker 2, FamiTracker, SNDH, HVSC,
+#           Nintendo Sound Format, YM, Video Game Music; none for .fur, .ay, .psg)
 FORMATS = [  # kind, what it holds (lines), [(extension, chips, archives)]
     ("Modules", ["song data, played by", "the tracker's own routine"], [
-        (".stc", "ay", []),
-        (".asc", "ay", []),
+        # http://fileformats.archiveteam.org/wiki/ASC_Sound_Master_module (2nd-hand, both formats)
+        (".stc", "ay", ["ZXArt", "Modland"]),
+        (".asc", "ay", ["ZXArt", "Modland"]),
+        # https://github.com/oisee/vti ("Win32 version of ZX Spectrum Pro Tracker 3.xx")
         (".pt3", "ay", ["ZXArt", "Modland"]),
-        (".aks", "ay", []),
+        # https://www.julien-nevo.com/arkostracker/
+        (".aks", "ay", ["Modland"]),
+        # https://github.com/georgeflower/MOD-XM-to-YM-SNDH-tool (2nd-hand: .MYS song, .MYV voices); no archive found
         (".mys", "ay", []),
-        (".sng", "sid", []),
-        (".ftm", "nes", []),
+        # https://github.com/leafo/goattracker2/blob/master/readme.txt (section 6.1)
+        (".sng", "sid", ["Modland"]),
+        # http://famitracker.com/
+        (".ftm", "nes", ["Modland"]),
+        # https://github.com/tildearrow/furnace (README); songs only in the repo's demos/ folder
         (".fur", "ay sid nes +", []),
     ]),
     ("Rips", ["song data with its original", "player code, needs CPU emulation"], [
-        (".ay", "ay", ["Project AY"]),
-        (".sndh", "ay", ["SNDH Archive"]),
-        (".sid", "sid", ["HVSC"]),
-        (".nsf", "nes", ["Zophar's Domain"]),
+        # Z80 code + data, ZX Spectrum and CPC: https://vgmrips.net/wiki/AY_File_Format
+        # archive: https://worldofspectrum.org/projectay/ (static since 2008)
+        (".ay", "ay", ["Project AY", "ZXArt"]),
+        # 68000 replay code + data: https://sndh.atari.org/fileformat.php ; archive: https://sndh.atari.org/
+        (".sndh", "ay", ["SNDH Archive", "Modland"]),
+        # 6502 code + data: https://www.hvsc.c64.org/download/C64Music/DOCUMENTS/SID_file_format.txt
+        # archive: https://hvsc.c64.org/
+        (".sid", "sid", ["HVSC", "Modland"]),
+        # 6502 code + data: https://www.nesdev.org/wiki/NSF ; archive: https://www.zophar.net/music/nintendo-nes-nsf
+        (".nsf", "nes", ["Zophar's Domain", "Modland"]),
     ]),
     ("Dumps", ["log of chip", "register writes"], [
-        (".psg", "ay", []),
+        # register writes per frame: https://documentation.help/AY-3-8910.12-ZX-Spectrum/ay_e9zqf.htm
+        (".psg", "ay", ["ZXArt"]),
+        # a .psg frame stream plus timer commands, meant to be compiled per platform, not played as is:
+        # https://github.com/ruguevara/taym (docs/TAYM-overview.md); no archive found
         (".taym", "ay", []),
-        (".ym", "ay", []),
-        (".vgm", "ay nes +", ["VGMRips"]),
+        # YM2149 registers per frame, from Atari ST, CPC and Spectrum: http://leonard.oxg.free.fr/ymformat.html
+        (".ym", "ay", ["Modland", "ZXArt"]),
+        # AY8910 and NES APU are in the spec, the SID is not:
+        # https://github.com/vgmrips/vgmplay-legacy/blob/master/VGMPlay/vgmspec171.txt
+        # archive: https://vgmrips.net/packs/ (blocks scripted access; not read, only its forum)
+        (".vgm", "ay nes +", ["VGMRips", "Modland"]),
     ]),
 ]
 
-# platform, note, can be emulated, [(tool, kind, chips, saves or exports, also runs on)]
+# platform, note, can be emulated, [(tool, kind, chips, saves or exports, note)]
 AUTHORING = [
     ("ZX Spectrum", "", True, [
+        # http://fileformats.archiveteam.org/wiki/ASC_Sound_Master_module (2nd-hand)
+        # https://bulba.untergrund.net/emulator_e.htm ("STC ... Sound Tracker v1.xx")
         ("Sound Tracker", "native tracker", "ay", ".stc", ""),
         ("ASC Sound Master", "native tracker", "ay", ".asc", ""),
+        # https://zxart.ee/eng/software/tool/music/ay-redaktory/protracker/pro-tracker/
         ("Pro Tracker 3", "native tracker", "ay", ".pt3", ""),
     ]),
     ("Commodore 64", "", True, [
+        # https://github.com/anarkiwi/sid-wizard (manual: saves .swm; its SID-Maker makes the .sid, on the C64)
         ("SID-Wizard", "native tracker", "sid", ".sid", ""),
     ]),
     ("Atari ST", "", True, [
-        ("SidSound Designer", "native tracker, 1993", "ay", ".sndh", ""),
+        # https://www.pouet.net/prod.php?which=13336 and https://sndh.atari.org/trackers.php (2nd-hand)
+        # Its own song format was not found. SNDH comes from a separate tool, "SSD->SND Conversion" (demozoo.org).
+        ("SidSound Designer", "native tracker, 1993", "ay", ".sndh", "SNDH via converter"),
+        # http://www.preromanbritain.com/maxymiser/man_v113.txt ("only SNDH files created with maxYMiser can be loaded")
         ("maxYMiser", "native tracker", "ay", ".mys .sndh", ""),
     ]),
     ("Desktop", "Windows · macOS · Linux", False, [
-        ("Vortex Tracker II", "cross-tracker", "ay", ".pt3 .sndh .psg", ""),
+        # https://bulba.untergrund.net/vortex_e.htm ("a Windows PT3-editor"; exports SNDH, ZXAYEMUL, PSG)
+        # https://github.com/ivanpirog/vortextracker (main.pas: ExportPSG, SaveDialogSNDH, SaveDialogZXAY)
+        ("Vortex Tracker II", "cross-tracker", "ay", ".pt3 .ay .sndh .psg", "Windows only"),
+        # https://www.julien-nevo.com/arkostracker/index.php/download/ (Windows, macOS, Linux)
+        # https://www.julien-nevo.com/arkostracker/index.php/command-line-tools/ (SongToYm, SongToVgm mirror the export menu)
         ("Arkos Tracker 3", "cross-tracker", "ay", ".aks .ym .vgm", ""),
+        # https://github.com/leafo/goattracker2/blob/master/readme.txt ("Win32 or Linux"; saves .SNG, packs PRG/BIN/SID)
+        # macOS download: https://cadaver.github.io/tools.html
         ("GoatTracker 2", "cross-tracker", "sid", ".sng .sid", ""),
-        ("FamiTracker", "cross-tracker", "nes", ".ftm .nsf", ""),
-        ("FamiStudio", "piano-roll editor", "nes", ".nsf .vgm", "Android, iOS"),
+        # http://famitracker.com/ ("free windows tracker ... NSF-file exporting")
+        ("FamiTracker", "cross-tracker", "nes", ".ftm .nsf", "Windows only"),
+        # https://famistudio.org/ (Windows, macOS, Linux, Android, iOS) and https://famistudio.org/doc/export/ (NSF, VGM)
+        # iOS: https://apps.apple.com/us/app/famistudio/id6741355257 ; it reads .ftm but does not write it
+        ("FamiStudio", "piano-roll editor", "nes", ".nsf .vgm", "also Android, iOS"),
+        # https://github.com/tildearrow/furnace (README: Windows, macOS, Linux; chip list)
+        # https://github.com/tildearrow/furnace/blob/master/doc/2-interface/export.md (VGM; no NSF or SID export)
         ("Furnace", "multi-system tracker", "ay sid nes +", ".fur .vgm", ""),
     ]),
     ("Handheld consoles", "Linux pocket devices", False, [
-        ("ChipNomad", "handheld tracker", "ay", ".psg .vgm", "desktop, Android"),
+        # https://github.com/Megus/chipnomad-tracker (README: handhelds first, desktop and Android builds; AY/YM only)
+        # exports: tracker/src/screens/screen_export.cpp (PSG) and the release notes (VGM)
+        ("ChipNomad", "handheld tracker", "ay", ".psg .vgm", "also desktop, Android"),
     ]),
     ("Web browser", "", False, [
+        # https://github.com/paator/bitphase (README: chips; exports PSG, TAYM, SNDH for AY songs, VGM, NSF)
         ("Bitphase", "web tracker", "ay nes", ".sndh .nsf .psg .taym .vgm", ""),
     ]),
 ]
 
-# platform, note, can be emulated, [(player, kind, chips, plays, also runs on)]
+# platform, note, can be emulated, [(player, kind, chips, plays, note)]
 PLAYBACK = [
     ("ZX Spectrum", "", True, [
-        ("PTxPlay", "native PT3 routine", "ay", ".pt3", ""),
-        ("PSG players", "native routines", "ay", ".psg", ""),
+        # http://bulba.untergrund.net/progr_e.htm ("Universal PT2 and PT3 player for ZX Spectrum and MSX")
+        ("PTxPlay", "native PT2/PT3 routine", "ay", ".pt3", "also MSX"),
+        # https://github.com/jounikor/psgpacker ("PSG packer and Z80 player for ZX Spectrum"): plays its packed form
+        # No widely used native player of raw .psg was found.
+        ("psgpacker", "native player", "ay", ".psg", "PSG packed first"),
+        # https://github.com/ruguevara/aymax-player ("takes a track in the TAYM interchange format"; builds .tap, .sna)
         ("AYMax", "native engine, 128K", "ay", ".taym", ""),
     ]),
     ("Desktop", "Windows · macOS · Linux", False, [
+        # https://github.com/Pixel-Matter/uZX/blob/main/docs/user-guide.md (Opening Files)
         ("µZX Player", "player with visuals", "ay", ".stc .asc .pt3 .psg .taym", ""),
     ]),
     ("Android", "", False, [
-        ("ZXTune", "multi-format player", "ay sid nes +", ".stc .asc .pt3 .ay .sid .nsf .psg .ym .vgm", "Windows, Linux"),
+        # https://github.com/vitamin-caig/zxtune (README: Android stores)
+        # formats: src/core/plugins/players (ay/aym_plugin.cpp, sid_base.cpp, gme_base.cpp, vgm_base.cpp); no SNDH
+        # desktop builds: https://storage.zxtune.ru/builds/latest/ (Windows, Linux, macOS)
+        ("ZXTune", "multi-format player", "ay sid nes +", ".stc .asc .pt3 .ay .sid .nsf .psg .ym .vgm", "also desktop"),
     ]),
     ("iOS", "", False, [
-        ("Modizer", "multi-format player", "ay sid nes +", ".pt3 .ay .sndh .sid .nsf .vgm", ""),
+        # https://github.com/yoyofr/modizer/blob/master/src/ModizerConstants.h (SUPPORTED_FILETYPE_ZXTUNE, _FUR,
+        # _ATARISOUND, _SID, _NSFPLAY, _STSOUND, _VGM)
+        ("Modizer", "multi-format player", "ay sid nes +",
+         ".stc .asc .pt3 .ftm .fur .ay .sndh .sid .nsf .psg .ym .vgm", ""),
     ]),
 ]
 
@@ -160,7 +223,7 @@ def draw_rows(platforms, y, taps):
             boxes.append(text(tx + 56, cy + 18, "or an emulator", 12, MUTED, anchor="middle"))
         elif note:
             boxes.append(text(tx, cy + 16, note, 12.5, MUTED))
-        for i, (name, kind, chips, formats, also) in enumerate(items):
+        for i, (name, kind, chips, formats, note) in enumerate(items):
             ny = y + 9 + i * ROW
             row_cy = ny + NODE_H / 2
             unknown = [e for e in formats.split() if e not in COLUMNS]
@@ -172,7 +235,7 @@ def draw_rows(platforms, y, taps):
             boxes.append(f"<rect x='{NODE_X}' y='{ny}' width='{NODE_W}' height='{NODE_H}' rx='8' fill='#FFFFFF' "
                          f"stroke='#444441' stroke-width='1.2'/>")
             boxes.append(text(NODE_X + 14, ny + 19, name, 16, weight=600))
-            boxes.append(text(NODE_X + 14, ny + 35, kind + (f" · also {also}" if also else ""), 12.5, MUTED))
+            boxes.append(text(NODE_X + 14, ny + 35, kind + (f" · {note}" if note else ""), 12.5, MUTED))
             boxes.append(dots(NODE_X + NODE_W - 16, ny + 14, chips.split()))
         y += h + PANEL_GAP
     return "".join(wires), "".join(boxes), y - PANEL_GAP
@@ -212,7 +275,7 @@ def draw():
     players_y = formats_y + FORMAT_H + TAG_H + 60
     player_wires, player_boxes, bottom = draw_rows(PLAYBACK, players_y, played)
 
-    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 5", 14, MUTED),
+    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 6, facts checked 2026-11-17", 14, MUTED),
            text(PX, TARGET_Y + TARGET_H / 2, "Target platforms", 19, weight=600),
            text(PX, TARGET_Y + TARGET_H / 2 + 19, "sound chips and their machines", 13, MUTED),
            draw_targets(GRID_X - PITCH / 2, TARGET_Y)]
