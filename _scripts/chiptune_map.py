@@ -10,7 +10,7 @@ Rows and columns are drawn in table order.
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from chiptune_icons import chip as chip_icon, icon
+from chiptune_icons import GLYPHS, chip as chip_icon, glyph, glyph_width, icon
 
 OUT = Path(__file__).resolve().parent.parent / "chiptune" / "map.svg"
 
@@ -79,83 +79,84 @@ FORMATS = [  # kind, what it holds (lines), [(extension, chips, archives)]
     ]),
 ]
 
-# platform, note, can be emulated, [(tool, kind, chips, saves or exports, note)]
+# platform, note, can be emulated, [(tool, kind, chips, saves or exports, runs on)]
+# runs on: zx c64 st msx win mac linux android ios web handheld, drawn as glyphs in the tool's corner
 AUTHORING = [
     ("ZX Spectrum", "", True, [
         # http://fileformats.archiveteam.org/wiki/ASC_Sound_Master_module (2nd-hand)
         # https://bulba.untergrund.net/emulator_e.htm ("STC ... Sound Tracker v1.xx")
-        ("Sound Tracker", "native tracker", "ay", ".stc", ""),
-        ("ASC Sound Master", "native tracker", "ay", ".asc", ""),
+        ("Sound Tracker", "native tracker", "ay", ".stc", "zx"),
+        ("ASC Sound Master", "native tracker", "ay", ".asc", "zx"),
         # https://zxart.ee/eng/software/tool/music/ay-redaktory/protracker/pro-tracker/
-        ("Pro Tracker 3", "native tracker", "ay", ".pt3", ""),
+        ("Pro Tracker 3", "native tracker", "ay", ".pt3", "zx"),
     ]),
     ("Commodore 64", "", True, [
         # https://github.com/anarkiwi/sid-wizard (manual: saves .swm; its SID-Maker makes the .sid, on the C64)
-        ("SID-Wizard", "native tracker", "sid", ".sid", ""),
+        ("SID-Wizard", "native tracker", "sid", ".sid", "c64"),
     ]),
     ("Atari ST", "", True, [
         # https://www.pouet.net/prod.php?which=13336 and https://sndh.atari.org/trackers.php (2nd-hand)
         # Its own song format was not found. SNDH comes from a separate tool, "SSD->SND Conversion" (demozoo.org).
-        ("SidSound Designer", "native tracker, 1993", "ay", ".sndh", "SNDH via converter"),
+        ("SidSound Designer", "native, 1993 · SNDH via converter", "ay", ".sndh", "st"),
         # http://www.preromanbritain.com/maxymiser/man_v113.txt ("only SNDH files created with maxYMiser can be loaded")
-        ("maxYMiser", "native tracker", "ay", ".mys .sndh", ""),
+        ("maxYMiser", "native tracker", "ay", ".mys .sndh", "st"),
     ]),
     ("Desktop", "Windows · macOS · Linux", False, [
         # https://bulba.untergrund.net/vortex_e.htm ("a Windows PT3-editor"; exports SNDH, ZXAYEMUL, PSG)
         # https://github.com/ivanpirog/vortextracker (main.pas: ExportPSG, SaveDialogSNDH, SaveDialogZXAY)
-        ("Vortex Tracker II", "cross-tracker", "ay", ".pt3 .ay .sndh .psg", "Windows only"),
+        ("Vortex Tracker II", "cross-tracker", "ay", ".pt3 .ay .sndh .psg", "win"),
         # https://www.julien-nevo.com/arkostracker/index.php/download/ (Windows, macOS, Linux)
         # https://www.julien-nevo.com/arkostracker/index.php/command-line-tools/ (SongToYm, SongToVgm mirror the export menu)
-        ("Arkos Tracker 3", "cross-tracker", "ay", ".aks .ym .vgm", ""),
+        ("Arkos Tracker 3", "cross-tracker", "ay", ".aks .ym .vgm", "win mac linux"),
         # https://github.com/leafo/goattracker2/blob/master/readme.txt ("Win32 or Linux"; saves .SNG, packs PRG/BIN/SID)
         # macOS download: https://cadaver.github.io/tools.html
-        ("GoatTracker 2", "cross-tracker", "sid", ".sng .sid", ""),
+        ("GoatTracker 2", "cross-tracker", "sid", ".sng .sid", "win mac linux"),
         # http://famitracker.com/ ("free windows tracker ... NSF-file exporting")
-        ("FamiTracker", "cross-tracker", "nes", ".ftm .nsf", "Windows only"),
+        ("FamiTracker", "cross-tracker", "nes", ".ftm .nsf", "win"),
         # https://famistudio.org/ (Windows, macOS, Linux, Android, iOS) and https://famistudio.org/doc/export/ (NSF, VGM)
         # iOS: https://apps.apple.com/us/app/famistudio/id6741355257 ; it reads .ftm but does not write it
-        ("FamiStudio", "piano-roll editor", "nes", ".nsf .vgm", "also Android, iOS"),
+        ("FamiStudio", "piano-roll editor", "nes", ".nsf .vgm", "win mac linux android ios"),
         # https://github.com/tildearrow/furnace (README: Windows, macOS, Linux; chip list)
         # https://github.com/tildearrow/furnace/blob/master/doc/2-interface/export.md (VGM; no NSF or SID export)
-        ("Furnace", "multi-system tracker", "ay sid nes +", ".fur .vgm", ""),
+        ("Furnace", "multi-system tracker", "ay sid nes +", ".fur .vgm", "win mac linux"),
     ]),
     ("Handheld consoles", "Linux pocket devices", False, [
         # https://github.com/Megus/chipnomad-tracker (README: handhelds first, desktop and Android builds; AY/YM only)
         # exports: tracker/src/screens/screen_export.cpp (PSG) and the release notes (VGM)
-        ("ChipNomad", "handheld tracker", "ay", ".psg .vgm", "also desktop, Android"),
+        ("ChipNomad", "handheld tracker", "ay", ".psg .vgm", "handheld win mac linux android"),
     ]),
     ("Web browser", "", False, [
         # https://github.com/paator/bitphase (README: chips; exports PSG, TAYM, SNDH for AY songs, VGM, NSF)
-        ("Bitphase", "web tracker", "ay nes", ".sndh .nsf .psg .taym .vgm", ""),
+        ("Bitphase", "web tracker", "ay nes", ".sndh .nsf .psg .taym .vgm", "web"),
     ]),
 ]
 
-# platform, note, can be emulated, [(player, kind, chips, plays, note)]
+# platform, note, can be emulated, [(player, kind, chips, plays, runs on)]
 PLAYBACK = [
     ("ZX Spectrum", "", True, [
         # http://bulba.untergrund.net/progr_e.htm ("Universal PT2 and PT3 player for ZX Spectrum and MSX")
-        ("PTxPlay", "native PT2/PT3 routine", "ay", ".pt3", "also MSX"),
+        ("PTxPlay", "native PT2/PT3 routine", "ay", ".pt3", "zx msx"),
         # https://github.com/jounikor/psgpacker ("PSG packer and Z80 player for ZX Spectrum"): plays its packed form
         # No widely used native player of raw .psg was found.
-        ("psgpacker", "native player", "ay", ".psg", "PSG packed first"),
+        ("psgpacker", "native player · PSG packed first", "ay", ".psg", "zx"),
         # https://github.com/ruguevara/aymax-player ("takes a track in the TAYM interchange format"; builds .tap, .sna)
-        ("AYMax", "native engine, 128K", "ay", ".taym", ""),
+        ("AYMax", "native engine, 128K", "ay", ".taym", "zx"),
     ]),
     ("Desktop", "Windows · macOS · Linux", False, [
         # https://github.com/Pixel-Matter/uZX/blob/main/docs/user-guide.md (Opening Files)
-        ("µZX Player", "player with visuals", "ay", ".stc .asc .pt3 .psg .taym", ""),
+        ("µZX Player", "player with visuals", "ay", ".stc .asc .pt3 .psg .taym", "win mac linux"),
     ]),
     ("Android", "", False, [
         # https://github.com/vitamin-caig/zxtune (README: Android stores)
         # formats: src/core/plugins/players (ay/aym_plugin.cpp, sid_base.cpp, gme_base.cpp, vgm_base.cpp); no SNDH
         # desktop builds: https://storage.zxtune.ru/builds/latest/ (Windows, Linux, macOS)
-        ("ZXTune", "multi-format player", "ay sid nes +", ".stc .asc .pt3 .ay .sid .nsf .psg .ym .vgm", "also desktop"),
+        ("ZXTune", "multi-format player", "ay sid nes +", ".stc .asc .pt3 .ay .sid .nsf .psg .ym .vgm", "android win mac linux"),
     ]),
     ("iOS", "", False, [
         # https://github.com/yoyofr/modizer/blob/master/src/ModizerConstants.h (SUPPORTED_FILETYPE_ZXTUNE, _FUR,
         # _ATARISOUND, _SID, _NSFPLAY, _STSOUND, _VGM)
         ("Modizer", "multi-format player", "ay sid nes +",
-         ".stc .asc .pt3 .ftm .fur .ay .sndh .sid .nsf .psg .ym .vgm", ""),
+         ".stc .asc .pt3 .ftm .fur .ay .sndh .sid .nsf .psg .ym .vgm", "ios"),
     ]),
 ]
 
@@ -167,6 +168,7 @@ NODE_X = PX + LABEL_W
 GRID_X = NODE_X + NODE_W + 80  # centre of the first format column
 PITCH, GROUP_GAP = 96, 36
 FORMAT_W, FORMAT_H, TAG_LINE = 72, 50, 17
+GLYPH = 15  # size of a platform glyph
 TARGET_Y, TARGET_H, CARD_W, CARD_H = 110, 196, 164, 128  # the chip panels and their machine cards
 INK, MUTED, LINE, OTHER, PAPER, PANEL = "#2C2C2A", "#5F5E5A", "#B4B2A9", "#888780", "#FBFAF7", "#F1EFE8"
 FONT = "Helvetica Neue, Helvetica, Arial, sans-serif"
@@ -223,7 +225,7 @@ def draw_rows(platforms, y, taps):
             boxes.append(text(tx + 56, cy + 18, "or an emulator", 12, MUTED, anchor="middle"))
         elif note:
             boxes.append(text(tx, cy + 16, note, 12.5, MUTED))
-        for i, (name, kind, chips, formats, note) in enumerate(items):
+        for i, (name, kind, chips, formats, runs_on) in enumerate(items):
             ny = y + 9 + i * ROW
             row_cy = ny + NODE_H / 2
             unknown = [e for e in formats.split() if e not in COLUMNS]
@@ -235,7 +237,12 @@ def draw_rows(platforms, y, taps):
             boxes.append(f"<rect x='{NODE_X}' y='{ny}' width='{NODE_W}' height='{NODE_H}' rx='8' fill='#FFFFFF' "
                          f"stroke='#444441' stroke-width='1.2'/>")
             boxes.append(text(NODE_X + 14, ny + 19, name, 16, weight=600))
-            boxes.append(text(NODE_X + 14, ny + 35, kind + (f" · {note}" if note else ""), 12.5, MUTED))
+            boxes.append(text(NODE_X + 14, ny + 35, kind, 12.5, MUTED))
+            gx = NODE_X + NODE_W - 10
+            for pid in reversed(runs_on.split()):
+                gx -= glyph_width(pid, GLYPH)
+                boxes.append(glyph(pid, gx, ny + NODE_H - 6 - GLYPH, GLYPH))
+                gx -= 6
             boxes.append(dots(NODE_X + NODE_W - 16, ny + 14, chips.split()))
         y += h + PANEL_GAP
     return "".join(wires), "".join(boxes), y - PANEL_GAP
@@ -275,7 +282,7 @@ def draw():
     players_y = formats_y + FORMAT_H + TAG_H + 60
     player_wires, player_boxes, bottom = draw_rows(PLAYBACK, players_y, played)
 
-    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 6, facts checked 2026-11-17", 14, MUTED),
+    out = [text(PX, 56, "Chiptune world map", 30, weight=600), text(PX, 80, "draft 7, facts checked 2026-11-17", 14, MUTED),
            text(PX, TARGET_Y + TARGET_H / 2, "Target platforms", 19, weight=600),
            text(PX, TARGET_Y + TARGET_H / 2 + 19, "sound chips and their machines", 13, MUTED),
            draw_targets(GRID_X - PITCH / 2, TARGET_Y)]
@@ -320,6 +327,13 @@ def draw():
             text(PX + 772, ly + 5, "chips it works with (grey: others too)", 13, MUTED),
             f"<rect x='{PX + 1030}' y='{ly - 11}' width='60' height='22' fill='#FFF6DC' stroke='#BA7517' stroke-dasharray='4 3'/>",
             text(PX + 1100, ly + 5, "archive that collects the format", 13, MUTED)]
+    ly += 34
+    out.append(text(PX, ly + 5, "runs on:", 13, MUTED))
+    gx = PX + 66
+    for pid, (label, _) in GLYPHS.items():
+        out += [glyph(pid, gx, ly - GLYPH / 2, GLYPH), text(gx + glyph_width(pid, GLYPH) + 6, ly + 5, label, 13, MUTED)]
+        gx += glyph_width(pid, GLYPH) + 6 + len(label) * 7.2 + 26
+    out.append(text(gx, ly + 5, "and a small picture of a retro machine", 13, MUTED))
     colours = sorted({c for _, c, _, _ in COLUMNS.values()})
     markers = "".join(f"<marker id='m{c[1:]}' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='5' markerHeight='5' "
                       f"orient='auto'><path d='M1 1L9 5L1 9z' fill='{c}'/></marker>" for c in colours)

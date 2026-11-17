@@ -289,6 +289,49 @@ def dump():
     return ic
 
 
+# ======================================================================================
+# Platform glyphs: small marks on a tool or a player for what it runs on.
+# They are drawn here, not copied from the vendors' artwork.
+
+G = "#444441"
+GLYPHS = {  # id: (name, drawing in a 16 by 16 box)
+    "win": ("Windows", "".join(f"<rect x='{x}' y='{y}' width='7.2' height='7.2' fill='{G}'/>"
+                               for x in (0.5, 8.3) for y in (0.5, 8.3))),
+    "mac": ("macOS", f"<path fill='{G}' d='M8 4.6C6.9 3.9 5.4 3.7 4.2 4.6C2.6 5.8 2.4 8.4 3.2 10.6C3.9 12.6 5.2 14.6 6.5 14.6"
+                     "C7.2 14.6 7.5 14.2 8.2 14.2C8.9 14.2 9.2 14.6 9.9 14.6C11.1 14.6 12.3 12.9 13 11.3"
+                     "C11.6 10.7 11 9.4 11.1 8.2C11.2 7 11.9 6.2 12.7 5.7C11.9 4.6 10.8 4.2 9.9 4.2C9.1 4.2 8.5 4.6 8 4.6Z"
+                     "M8.2 3.9C8.2 2.6 9.2 1.5 10.5 1.4C10.6 2.7 9.5 3.9 8.2 3.9Z'/>"),
+    "linux": ("Linux", "<ellipse cx='5.2' cy='14.8' rx='2.1' ry='0.9' fill='#F2B01E'/>"
+                       "<ellipse cx='10.8' cy='14.8' rx='2.1' ry='0.9' fill='#F2B01E'/>"
+                       "<ellipse cx='8' cy='8.6' rx='4.6' ry='6.4' fill='#2C2C2A'/>"
+                       "<ellipse cx='8' cy='10.4' rx='2.9' ry='4' fill='#FFFFFF'/>"
+                       "<circle cx='6.7' cy='4.9' r='0.9' fill='#FFFFFF'/><circle cx='9.3' cy='4.9' r='0.9' fill='#FFFFFF'/>"
+                       "<ellipse cx='8' cy='6.5' rx='1.5' ry='0.8' fill='#F2B01E'/>"),
+    "android": ("Android", f"<path d='M1.5 12.5a6.5 6.5 0 0 1 13 0z' fill='{G}'/>"
+                           f"<path d='M4.6 6.8L3.3 4.4M11.4 6.8L12.7 4.4' stroke='{G}' stroke-width='1.1' stroke-linecap='round'/>"
+                           "<circle cx='5.3' cy='9.7' r='0.9' fill='#FFFFFF'/><circle cx='10.7' cy='9.7' r='0.9' fill='#FFFFFF'/>"),
+    "ios": ("iOS", f"<text x='0' y='12.6' font-size='11.5' font-weight='700' fill='{G}'>iOS</text>"),
+    "web": ("web browser", f"<g fill='none' stroke='{G}' stroke-width='1.2'><circle cx='8' cy='8' r='6.6'/>"
+                           "<ellipse cx='8' cy='8' rx='2.9' ry='6.6'/><path d='M1.4 8h13.2M8 1.4v13.2'/></g>"),
+    "handheld": ("handheld console", f"<rect x='3.5' y='0.8' width='9' height='14.4' rx='1.6' fill='{G}'/>"
+                                     "<rect x='5' y='2.3' width='6' height='5.2' fill='#FFFFFF'/>"
+                                     "<path d='M5.2 11h2.6M6.5 9.7v2.6' stroke='#FFFFFF' stroke-width='1'/>"
+                                     "<circle cx='10.3' cy='11' r='0.9' fill='#FFFFFF'/>"),
+}
+MACHINE_GLYPHS = {"zx": "ZX Spectrum", "c64": "Commodore 64", "st": "Atari ST", "msx": "MSX"}  # the icon, shrunk
+
+
+def glyph_width(platform, size):
+    return size * (1.9 if platform in MACHINE_GLYPHS else 1.3 if platform == "ios" else 1)
+
+
+def glyph(platform, x, y, size):
+    """The mark for a platform id, its top left corner at (x, y)."""
+    if platform in MACHINE_GLYPHS:
+        return icon(MACHINE_GLYPHS[platform]).svg(x + size * 0.95, y + size / 2, size * 1.9, size)
+    return f"<g transform='translate({x:.1f} {y:.1f}) scale({size / 16})'>{GLYPHS[platform][1]}</g>"
+
+
 ICONS = {
     "ZX Spectrum": zx_spectrum, "ZX Spectrum 128": zx_spectrum, "Commodore 64": commodore_64, "Atari ST": atari_st,
     "Amstrad CPC": amstrad_cpc, "MSX": msx, "NES / Famicom": nes,
