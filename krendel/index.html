@@ -7,8 +7,8 @@
   <base target="_blank">
   <link rel="icon" type="image/svg+xml" href="/krendel/assets/icon-DNOsVQRB.svg">
   <title>Krendel</title>
-  <script type="module" crossorigin src="/krendel/assets/index-DDbhSypn.js"></script>
-  <link rel="stylesheet" crossorigin href="/krendel/assets/index-Dwh8gSb8.css">
+  <script type="module" crossorigin src="/krendel/assets/index-CsBy7yJW.js"></script>
+  <link rel="stylesheet" crossorigin href="/krendel/assets/index-BQD8Qiy-.css">
 </head>
 <body>
   <header>
@@ -23,12 +23,6 @@
     <div class="legend" id="legend" aria-label="Instruments">
       <span><i class="contended"></i>Unallocated</span>
     </div>
-    <label>Chip
-      <select id="chip">
-        <option value="ay">AY-3-8910</option>
-        <option value="ym">YM2149</option>
-      </select>
-    </label>
   </header>
 
   <main>
@@ -40,8 +34,62 @@
     </section>
     <p id="error" role="alert" hidden></p>
 
-    <aside aria-label="Help">
-      <div id="help"></div>
+    <aside>
+      <div role="tablist" aria-label="Panel">
+        <button type="button" role="tab" id="helpTab" aria-controls="help" aria-selected="true">Help</button>
+        <button type="button" role="tab" id="settingsTab" aria-controls="settings" aria-selected="false">Settings</button>
+      </div>
+      <div id="help" role="tabpanel" aria-labelledby="helpTab"></div>
+      <form id="settings" role="tabpanel" aria-labelledby="settingsTab" hidden>
+        <fieldset id="chipSettings">
+          <legend>Chip</legend>
+          <label>Type
+            <select name="chip">
+              <option value="ay">AY-3-8910</option>
+              <option value="ym">YM2149</option>
+            </select>
+          </label>
+          <label>Clock
+            <select name="clock">
+              <option value="1773400">1.7734 MHz: ZX Spectrum 128</option>
+              <option value="1750000">1.75 MHz: Pentagon</option>
+              <option value="1789772.5">1.7898 MHz: MSX</option>
+              <option value="2000000">2 MHz: Atari ST</option>
+              <option value="1000000">1 MHz: Amstrad CPC</option>
+            </select>
+          </label>
+          <p>A change takes effect with the next <b>Play</b>.</p>
+        </fieldset>
+        <fieldset>
+          <legend>Audio</legend>
+          <label>Output <select name="output"></select></label>
+          <button type="button" id="outputNames" hidden>Show device names</button>
+        </fieldset>
+        <fieldset>
+          <legend>Editor</legend>
+          <label>Font size <input name="fontSize" type="number" min="8" max="48" required></label>
+          <label>Theme <select name="theme"></select></label>
+          <label>Keys
+            <select name="keybindings">
+              <option value="codemirror">Standard</option>
+              <option value="vim">Vim</option>
+              <option value="emacs">Emacs</option>
+              <option value="vscode">VS Code</option>
+            </select>
+          </label>
+          <label><input type="checkbox" name="isLineNumbersDisplayed"> Line numbers</label>
+          <label><input type="checkbox" name="isLineWrappingEnabled"> Wrap long lines</label>
+        </fieldset>
+        <fieldset>
+          <legend>Page</legend>
+          <label>Panel
+            <select name="panel">
+              <option value="right">Right</option>
+              <option value="left">Left</option>
+            </select>
+          </label>
+        </fieldset>
+      </form>
       <footer>Krendel <span class="version"></span> <span aria-hidden="true">·</span> Live coding for the AY/YM music chip <span aria-hidden="true">·</span> inspired by <a href="https://strudel.cc/">Strudel</a></footer>
     </aside>
   </main>

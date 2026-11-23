@@ -12,6 +12,7 @@ class UZXChipProcessor extends AudioWorkletProcessor {
         super();
         this.wasmModule = options.processorOptions?.wasmModule;
         this.isYm = options.processorOptions?.isYm ? 1 : 0;
+        this.chipClock = options.processorOptions?.chipClock ?? 1773400;
         this.frameRate = 50;
         this.engine = null;
         this.memory = null;
@@ -63,7 +64,7 @@ class UZXChipProcessor extends AudioWorkletProcessor {
     initializeEngine() {
         if (this.engine._initialize)
             this.engine._initialize();
-        if (!this.engine.uzx_init(sampleRate, this.isYm, this.frameRate))
+        if (!this.engine.uzx_init(sampleRate, this.isYm, this.frameRate, this.chipClock))
             throw new Error("WASM engine initialization failed");
         this.engineBaseFrame = this.nowFrame();
         this.port.postMessage({type: "initialized", sampleRate});
@@ -164,7 +165,7 @@ class UZXChipProcessor extends AudioWorkletProcessor {
     /** A generation can bring a frame rate of its own. One that the engine refuses leaves the rate as it was. */
     resetEngine(frame, frameRate = this.frameRate) {
         if (this.engine && !this.failed) {
-            if (frameRate !== this.frameRate && this.engine.uzx_init(sampleRate, this.isYm, frameRate))
+            if (frameRate !== this.frameRate && this.engine.uzx_init(sampleRate, this.isYm, frameRate, this.chipClock))
                 this.frameRate = frameRate;
             else
                 this.engine.uzx_reset();
