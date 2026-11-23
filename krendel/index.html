@@ -7,12 +7,12 @@
   <base target="_blank">
   <link rel="icon" type="image/svg+xml" href="/krendel/assets/icon-DNOsVQRB.svg">
   <title>Krendel</title>
-  <script type="module" crossorigin src="/krendel/assets/index-CsBy7yJW.js"></script>
-  <link rel="stylesheet" crossorigin href="/krendel/assets/index-BQD8Qiy-.css">
+  <script type="module" crossorigin src="/krendel/assets/index-BVBZX4Dr.js"></script>
+  <link rel="stylesheet" crossorigin href="/krendel/assets/index-Dh8wBeS_.css">
 </head>
 <body>
   <header>
-    <h1><img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3e%3c!--%20A%20script%20К.%20Its%20stem%20ends%20in%20a%20hook,%20and%20each%20arm%20rolls%20up%20into%20a%20spiral%20of%20half%20circles,%20as%20a%20strudel%20does.%20--%3e%3crect%20width='32'%20height='32'%20rx='7'%20fill='%2327392d'/%3e%3cpath%20transform='translate(3.55%200)%20skewX(-8)'%20fill='none'%20stroke='%23c0eb9a'%20stroke-width='2.4'%20stroke-linecap='round'%20stroke-linejoin='round'%20d='M9.5%205.5V22.5C9.5%2026%207.9%2027.1%205.7%2025.9%20M9.5%2015.5Q12.17%2010.73%2016.5%207.4A3.9%203.9%200%200%201%2021.25%2013.58A2.1%202.1%200%200%201%2018.69%2010.25%20M9.5%2016.5Q12.95%2021.8%2018%2025.6A4.9%204.9%200%200%200%2023.89%2017.77A3%203%200%200%200%2020.28%2022.56A1.3%201.3%200%200%200%2021.85%2020.48'/%3e%3c/svg%3e" alt="" width="26" height="26">Krendel <small class="version"></small></h1>
+    <h1><span class="logo" aria-hidden="true"></span>Krendel</h1>
     <button type="button" id="play" class="primary">
       <span id="playLabel" title="Ctrl+Enter"><span aria-hidden="true">▶</span> Play</span>
       <span id="stopLabel" title="Ctrl+." hidden><span aria-hidden="true">■</span> Stop</span>
@@ -40,10 +40,11 @@
         <button type="button" role="tab" id="settingsTab" aria-controls="settings" aria-selected="false">Settings</button>
       </div>
       <div id="help" role="tabpanel" aria-labelledby="helpTab"></div>
+      <!-- As Strudel's settings: each one's name over its control. A name is an editor extension's in
+           @strudel/codemirror, or one that settings.js keeps. -->
       <form id="settings" role="tabpanel" aria-labelledby="settingsTab" hidden>
         <fieldset id="chipSettings">
-          <legend>Chip</legend>
-          <label>Type
+          <label>Chip
             <select name="chip">
               <option value="ay">AY-3-8910</option>
               <option value="ym">YM2149</option>
@@ -60,34 +61,72 @@
           </label>
           <p>A change takes effect with the next <b>Play</b>.</p>
         </fieldset>
-        <fieldset>
-          <legend>Audio</legend>
-          <label>Output <select name="output"></select></label>
+        <div>
+          <label>Audio output device <select name="output"></select></label>
           <button type="button" id="outputNames" hidden>Show device names</button>
+        </div>
+        <label>Theme <select name="theme"></select></label>
+        <!-- fonts.css has these fonts. -->
+        <label>Font
+          <select name="fontFamily">
+            <option value="">System monospace</option>
+            <optgroup label="8-bit computers">
+              <option>ZX Spectrum</option>
+              <option>ZX Spectrum 6x8</option>
+              <option>Amstrad CPC</option>
+              <option>MSX</option>
+              <option>SAM Coupé</option>
+              <option>Sinclair QL</option>
+              <option>Cambridge Z88</option>
+            </optgroup>
+            <optgroup label="Others">
+              <option>Iosevka</option>
+              <option>JetBrains Mono</option>
+              <option>Fira Code</option>
+              <option>Fira Code SemiBold</option>
+              <option>Hack</option>
+              <option>IBM 3270</option>
+              <option>BigBlue Terminal</option>
+              <option>Monocraft</option>
+              <option>Press Start 2P</option>
+            </optgroup>
+          </select>
+        </label>
+        <fieldset class="row">
+          <legend>Font size</legend>
+          <input name="fontSize" type="range" min="8" max="48" aria-label="Font size">
+          <input name="fontSize" type="number" min="8" max="48" required aria-label="Font size">
         </fieldset>
-        <fieldset>
-          <legend>Editor</legend>
-          <label>Font size <input name="fontSize" type="number" min="8" max="48" required></label>
-          <label>Theme <select name="theme"></select></label>
-          <label>Keys
-            <select name="keybindings">
-              <option value="codemirror">Standard</option>
-              <option value="vim">Vim</option>
-              <option value="emacs">Emacs</option>
-              <option value="vscode">VS Code</option>
-            </select>
-          </label>
+        <fieldset class="choices">
+          <legend>Keys</legend>
+          <label><input type="radio" name="keybindings" value="codemirror">Standard</label>
+          <label><input type="radio" name="keybindings" value="vim">Vim</label>
+          <label><input type="radio" name="keybindings" value="emacs">Emacs</label>
+          <label><input type="radio" name="keybindings" value="vscode">VS Code</label>
+        </fieldset>
+        <fieldset class="choices">
+          <legend>Panel position</legend>
+          <label><input type="radio" name="panel" value="left">Left</label>
+          <label><input type="radio" name="panel" value="right">Right</label>
+          <label><input type="radio" name="panel" value="bottom">Bottom</label>
+        </fieldset>
+        <fieldset class="checks">
+          <legend>More settings</legend>
+          <label><input type="checkbox" name="isBracketMatchingEnabled"> Match brackets</label>
+          <label><input type="checkbox" name="isBracketClosingEnabled"> Close brackets</label>
           <label><input type="checkbox" name="isLineNumbersDisplayed"> Line numbers</label>
+          <label><input type="checkbox" name="isActiveLineHighlighted"> Highlight the cursor's line</label>
+          <label><input type="checkbox" name="isPatternHighlightingEnabled"> Highlight playing events in the code</label>
+          <label><input type="checkbox" name="isAutoCompletionEnabled"> Complete Strudel's functions</label>
+          <label><input type="checkbox" name="isTooltipEnabled"> Strudel's docs on Ctrl and hover</label>
           <label><input type="checkbox" name="isLineWrappingEnabled"> Wrap long lines</label>
+          <label><input type="checkbox" name="isTabIndentationEnabled"> Tab indents</label>
+          <label><input type="checkbox" name="isMultiCursorEnabled"> Multiple cursors with Cmd/Ctrl+click</label>
+          <label><input type="checkbox" name="isFlashEnabled"> Flash the code on Play and Update</label>
         </fieldset>
         <fieldset>
-          <legend>Page</legend>
-          <label>Panel
-            <select name="panel">
-              <option value="right">Right</option>
-              <option value="left">Left</option>
-            </select>
-          </label>
+          <legend>Reset settings</legend>
+          <button type="button" id="restoreDefaults">Restore default settings</button>
         </fieldset>
       </form>
       <footer>Krendel <span class="version"></span> <span aria-hidden="true">·</span> Live coding for the AY/YM music chip <span aria-hidden="true">·</span> inspired by <a href="https://strudel.cc/">Strudel</a></footer>
