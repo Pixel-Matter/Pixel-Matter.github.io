@@ -1,0 +1,5 @@
+PICO-8's font, by Lexaloffle Games, is available under the CC0 1.0 Universal
+Public Domain Dedication, as https://www.lexaloffle.com/pico-8.php?page=faq says:
+"The palette and font are both available under a CC-0 license."
+
+https://creativecommons.org/publicdomain/zero/1.0/
