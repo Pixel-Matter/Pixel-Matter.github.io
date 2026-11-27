@@ -291,7 +291,7 @@ Please report this to https://github.com/markedjs/marked.`,t){let s="<p>An error
            M9.5 15.5Q12.17 10.73 16.5 7.4A3.9 3.9 0 0 1 21.25 13.58A2.1 2.1 0 0 1 18.69 10.25
            M9.5 16.5Q12.95 21.8 18 25.6A4.9 4.9 0 0 0 23.89 17.77A3 3 0 0 0 20.28 22.56A1.3 1.3 0 0 0 21.85 20.48"/>
 </svg>
-`,noe="0.4.1-alpha",soe=`// An instrument is a function that sets controls. Times inside a note are in seconds.
+`,noe="0.4.2-alpha",soe=`// An instrument is a function that sets controls. Times inside a note are in seconds.
 setfps(50) // frames a second: a note starts on a frame, and its sound moves a step each frame
 setfpb(24) // the tempo: 24 frames in a beat, which is 125 bpm, and four beats in a cycle
 const f = 1 / fps          // a frame, to count times in
